@@ -1,4 +1,5 @@
 from boltons.funcutils import wraps
+from boltons.strutils import slugify
 from pymemcache.client.base import Client as PymemcacheClient
 from .cacher.pymemcache import PymemcacheCacher, msgpack_serializer, msgpack_deserializer
 from .cacher import Cacher, GetState
@@ -44,7 +45,10 @@ class FunCacher(object):
         else:
             raise ValueError('cacher should be subclass of Cacher')
 
-    def __call__(self, key_prefix):
+    def __call__(self, key_prefix: bytes=b''):
+        if isinstance(key_prefix, str):
+            key_prefix = slugify(
+                key_prefix, ascii=True, lower=False)
 
         def _decorator(f):
 

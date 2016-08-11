@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.DEBUG)
 pymemcacher = FunCacher()
 
 
-@pymemcacher(b'slow_add')
+@pymemcacher('slow add')
 def slow_add(a, b):
     time.sleep(2)
     return a + b
