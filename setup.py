@@ -9,6 +9,6 @@ setup(
     license='GPL',
     url='https://github.com/d2207197/funcacher',
     packages=['funcacher'],
-    install_requires=['boltons', 'pymemcache'],
+    install_requires=['boltons', 'pymemcache', 'msgpack-python'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'pytest-timeout'])
