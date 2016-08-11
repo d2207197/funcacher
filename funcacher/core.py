@@ -45,7 +45,7 @@ class FunCacher(object):
         else:
             raise ValueError('cacher should be subclass of Cacher')
 
-    def __call__(self, key_prefix: bytes=b''):
+    def __call__(self, key_prefix: bytes=b'', is_method: bool=False):
         if isinstance(key_prefix, str):
             key_prefix = slugify(
                 key_prefix, ascii=True, lower=False)
@@ -54,7 +54,8 @@ class FunCacher(object):
 
             @wraps(f)
             def _decorated(*args, **kwargs):
-                key = key_prefix + self.cacher.args_serializer(*args, **kwargs)
+                key_args = args[1:] if is_method else args
+                key = key_prefix + self.cacher.args_serializer(*key_args, **kwargs)
                 state, value = self.cacher.get(key)
                 if state != GetState.hit:
                     value = f(*args, **kwargs)
