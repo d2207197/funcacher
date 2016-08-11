@@ -1,7 +1,7 @@
 from boltons.funcutils import wraps
 from boltons.strutils import slugify
 from pymemcache.client.base import Client as PymemcacheClient
-from .cacher.pymemcache import PymemcacheCacher, msgpack_serializer, msgpack_deserializer
+from .cacher.pymemcache import PymemcacheCacher, msgpack_serializer, msgpack_deserializer, pickle_serializer, pickle_deserializer
 from .cacher import Cacher, GetState
 
 
@@ -35,8 +35,8 @@ class FunCacher(object):
                 timeout=0.05,
                 no_delay=True,
                 default_noreply=True,
-                serializer=msgpack_serializer,
-                deserializer=msgpack_deserializer)
+                serializer=pickle_serializer,
+                deserializer=pickle_deserializer)
 
             self.cacher = PymemcacheCacher(pymemcacheclient)
 
