@@ -1,10 +1,15 @@
 import pickle
 import hashlib
 import binascii
-import pandas as pd
 import msgpack
 import logging
 from . import Cacher, GetState
+
+try:
+    import pandsa as pd
+    PANDAS_EXIST = True
+except ImportError:
+    PANDAS_EXIST = False
 
 logger = logging.getLogger('funcacher')
 
@@ -13,7 +18,7 @@ logger = logging.getLogger('funcacher')
 def msgpack_serializer(key, value):
     if type(value) == str:
         flags = 1
-    elif isinstance(value, pd.DataFrame):
+    elif PANDAS_EXIST and isinstance(value, pd.DataFrame):
         value, flags = value.to_msgpack(), 3
     else:
         value, flags = msgpack.packb(value, use_bin_type=True), 2
