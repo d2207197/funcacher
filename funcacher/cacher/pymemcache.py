@@ -7,9 +7,8 @@ from . import Cacher, GetState
 
 try:
     import pandsa as pd
-    PANDAS_EXIST = True
 except ImportError:
-    PANDAS_EXIST = False
+    pd = None
 
 logger = logging.getLogger('funcacher')
 
@@ -18,7 +17,7 @@ logger = logging.getLogger('funcacher')
 def msgpack_serializer(key, value):
     if type(value) == str:
         flags = 1
-    elif PANDAS_EXIST and isinstance(value, pd.DataFrame):
+    elif pd and isinstance(value, pd.DataFrame):
         value, flags = value.to_msgpack(), 3
     else:
         value, flags = msgpack.packb(value, use_bin_type=True), 2
@@ -38,6 +37,7 @@ def msgpack_deserializer(key, value, flags):
         return pd.read_msgpack(value)
     raise ValueError("Unknown serialization format")
 
+
 def pickle_serializer(key, value):
     if isinstance(value, (str, bytes)):
         flags = 1
@@ -46,6 +46,7 @@ def pickle_serializer(key, value):
     logger.debug('cache[key => %s, value length => %d, flags => %s', key,
                  len(value), flags)
     return value, flags
+
 
 def pickle_deserializer(key, value, flags):
     logger.debug('cache[key => %s, value length => %d, flags => %s', key,
