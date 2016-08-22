@@ -1,0 +1,18 @@
+# funcacher
+[[https://travis-ci.org/d2207197/funcacher][https://travis-ci.org/d2207197/funcacher.svg?branch=master]]
+
+Cache any pure function to specific cache service(default to memcache).
+For memcache, function arguments and return value objects should be serializable by the Pickle module.
+
+
+
+#+BEGIN_SRC python
+from funcacher import FunCacher
+funcacher = FunCacher()
+
+
+@funcacher('add') # keyword for distinguishing
+def add(a, b):
+    return a + b
+
+#+END_SRC python
