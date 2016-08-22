@@ -1,8 +1,10 @@
 from boltons.funcutils import wraps
 from boltons.strutils import slugify
 from pymemcache.client.base import Client as PymemcacheClient
-from .cacher.pymemcache import PymemcacheCacher, msgpack_serializer, msgpack_deserializer, pickle_serializer, pickle_deserializer
+from .cacher.pymemcache import PymemcacheCacher
 from .cacher import Cacher, GetState
+from .cacher.pymemcache.serializer.pickle import pickle_deserializer, pickle_serializer
+from . import logger
 
 
 class FunCacher(object):
@@ -47,15 +49,15 @@ class FunCacher(object):
 
     def __call__(self, key_prefix: bytes=b'', is_method: bool=False):
         if isinstance(key_prefix, str):
-            key_prefix = slugify(
-                key_prefix, ascii=True, lower=False)
+            key_prefix = slugify(key_prefix, ascii=True, lower=False)
 
         def _decorator(f):
 
             @wraps(f)
             def _decorated(*args, **kwargs):
                 key_args = args[1:] if is_method else args
-                key = key_prefix + self.cacher.args_serializer(*key_args, **kwargs)
+                key = key_prefix + self.cacher.args_serializer(*key_args, **
+                                                               kwargs)
                 state, value = self.cacher.get(key)
                 if state != GetState.hit:
                     value = f(*args, **kwargs)

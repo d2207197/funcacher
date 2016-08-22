@@ -1,6 +1,7 @@
 from enum import Enum
 from abc import ABCMeta, abstractmethod
 from typing import Any
+from .. import logger
 
 
 class GetState(Enum):

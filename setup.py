@@ -8,7 +8,10 @@ setup(
     author_email='joseph.yen@gmail.com',
     license='GPL',
     url='https://github.com/d2207197/funcacher',
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     install_requires=['boltons', 'pymemcache', 'msgpack-python'],
+    external_requires={
+        'Pandas': ['pandas']
+    },
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'pytest-timeout'])
