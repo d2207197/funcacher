@@ -10,7 +10,7 @@ class GetState(Enum):
     failed = -1
 
 
-class Cacher(metaclass=ABCMeta):
+class Cache(metaclass=ABCMeta):
 
     @property
     @abstractmethod

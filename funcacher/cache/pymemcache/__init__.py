@@ -1,14 +1,13 @@
 import pickle
 import hashlib
 import binascii
-from .. import Cacher, GetState
+from .. import Cache, GetState
 from .. import logger
-
 
 # from pymemcache.client.hash import HashClient for multiple memcached servers
 
 
-class PymemcacheCacher(Cacher):
+class PymemcacheCache(Cache):
     SERIALIZE_LENGTH_THRESHOLD = 176
     MAX_KEY_LENGTH = 250
 
